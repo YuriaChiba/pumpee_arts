@@ -1,0 +1,49 @@
+<div class="col-md-12">
+  <div class="form-inline pull-right" style="margin-bottom:10px;">
+    <%= search_form_for @q do |f| %>
+      <div class="form-group">
+        <%= f.search_field :name_or_detail_cont, placeholder: "ジャンル、キーワードを検索", class: "form-control" %>
+        <%= f.submit "検索", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<div class="row">
+
+  <div class="col-md-8">
+    <% @products.each do |product| %>
+      <div class="article">
+        <h2>作品名：<%= product.name %></h2>
+        <p>カテゴリ：<%= product.category %></p>
+        <p>作成日：<%= product.created_at %></p>
+        <p><%= truncate(product.detail, length: 50) %></p>
+        <p><%= link_to "詳細を見る", product, class: "btn btns-default" %></p>
+      </div>
+    <% end %>
+    <%= paginate @products %>
+  </div>
+
+  <div class="col-md-4">
+   <% if User.exists? %>
+    <div class="thumbnail">
+      <%= image_tag User.first.image_url, alt: "ユーザーアイコン" %>
+      <div class="caption">
+        <h3>ユーザー名：<%= User.first.name %></h3>
+        <p>詳細：<%= User.first.description %></p>
+      </div>
+    </div>
+    <% end %>
+    <div class="list-group">
+    <% if User.exists? %>
+      <% @product.each_with_index do |product, index| %>
+      <% if index >= 5
+           break
+         end
+      %>
+      <%= link_to product.name, product, class: "list-group-item" %>
+      <% end %>
+      <% end %>
+    </div>
+  </div>
+
+</div>
